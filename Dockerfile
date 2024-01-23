@@ -1,14 +1,20 @@
-# Use an official lightweight Node.js image
+# Use an official Node runtime as a parent image
 FROM node:14-alpine
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Set the working directory to /app
+WORKDIR /app
 
-# Copy the content of the local src directory to the working directory
-COPY . .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Specify the port number the container should expose
+# Install any needed packages specified in requirements.txt
+RUN npm install
+
+# Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Run the application
-CMD ["node", "-e", "require('http').createServer((req, res) => res.end(require('fs').readFileSync('index.html'))).listen(80)"]
+# Define environment variable
+ENV NAME World
+
+# Run app.py when the container launches
+CMD ["npm", "start"]
